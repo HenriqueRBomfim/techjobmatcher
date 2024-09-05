@@ -2,6 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+.indeed_jobs_big.csv
 
 # C extensions
 *.so
