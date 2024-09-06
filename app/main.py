@@ -1,6 +1,9 @@
 from fastapi import FastAPI, Query
-import os
+import pandas as pd
+import numpy as np
+from sklearn.feature_extraction.text import TfidfVectorizer
 import uvicorn
+import os
 
 class DummyModel:
     def predict(self, X):
@@ -13,18 +16,12 @@ def load_model():
 app = FastAPI()
 app.predictor = load_model()
 
-from fastapi import FastAPI, Query
-import pandas as pd
-import numpy as np
-from sklearn.feature_extraction.text import TfidfVectorizer
-import uvicorn
-import os
-
 # Carregar base de dados de vagas de emprego
 def load_data():
     try:
-        df = pd.read_excel("techjobmatcher\indeed_jobs_big.xlsx")
-        print(f"Loaded data with {len(df)} records.")
+        # Usar o caminho relativo para acessar o arquivo dentro da pasta dataset
+        file_path = os.path.join("dataset", "indeed_jobs_big.csv")
+        df = pd.read_csv(file_path)
         if df['content'].isnull().all():
             raise ValueError("The content column is empty.")
     except Exception as e:
@@ -34,14 +31,19 @@ def load_data():
 
 # Função para calcular relevância com base no TF-IDF e similaridade do cosseno
 def calculate_relevance(df, query):
-    vectorizer = TfidfVectorizer()
-    X = vectorizer.fit_transform(df['content'])  # Vetorizando o conteúdo das vagas
-    query_vector = vectorizer.transform([query])  # Vetorizando a consulta
-    cosine_similarities = np.dot(query_vector, X.T).toarray().flatten()  # Similaridade cosseno
-    related_docs_indices = cosine_similarities.argsort()[::-1]  # Ordenando por relevância
+    # Remover entradas com conteúdo NaN
+    df = df.dropna(subset=['content'])
+    
+    if df['content'].empty:
+        raise ValueError("The content column is empty or all values are NaN.")
+    
+    vectorizer = TfidfVectorizer(stop_words='english')
+    X = vectorizer.fit_transform(df['content'].astype(str))  # Certificar-se de que todos os dados são strings
+    query_vector = vectorizer.transform([query])
+    cosine_similarities = np.dot(query_vector, X.T).toarray().flatten()
+    related_docs_indices = cosine_similarities.argsort()[::-1]
     return related_docs_indices, cosine_similarities
 
-# Carregando dados e inicializando a aplicação
 df = load_data()
 
 @app.get("/hello")
@@ -55,18 +57,19 @@ def predict(X: str = Query(..., description="Input text for prediction")):
 
 @app.get("/query")
 def query_route(query: str = Query(..., description="Search query")):
-    related_docs_indices, cosine_similarities = calculate_relevance(df, query)
-    print(f"Query: {query}")
-    
-    # Montando os resultados com base na relevância
     results = []
-    for idx in related_docs_indices[:10]:  # Retornando os 10 resultados mais relevantes
-        results.append({
-            "title": df['title'].iloc[idx],
-            "content": df['content'].iloc[idx][:500],  # Limitar o conteúdo aos primeiros 500 caracteres
-            "relevance": cosine_similarities[idx]
-        })
-    
+    try:
+        related_docs_indices, cosine_similarities = calculate_relevance(df, query)
+        for idx in related_docs_indices[:10]:
+            if cosine_similarities[idx] > 0.18:
+                results.append({
+                    "title": df['title'].iloc[idx],
+                    "content": df['content'].iloc[idx][:500],
+                    "relevance": cosine_similarities[idx]
+                })
+    except Exception as e:
+        return {"results": results, "error": str(e), "message": "Failed to process query"}
+
     return {"results": results, "message": "OK"}
 
 def run():

@@ -6,9 +6,10 @@ COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /app/
+COPY dataset /app/dataset
 
-#RUN pip install --no-cache-dir pytest && pytest --disable-warnings
-    
+RUN pip install --no-cache-dir pytest && pytest --disable-warnings
+
 EXPOSE 8435
 
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8435"]
