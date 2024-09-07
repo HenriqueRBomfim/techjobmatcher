@@ -5,12 +5,14 @@ Esta API encontra a vaga de TI mais relevante para a sua pesquisa.
 # Como instalar
 
 A seguinte lista de requirements deve ser instalada antes de rodar a API:
+```bash
 fastapi
 uvicorn
 pytest
 scikit-learn
 httpx
 pandas
+```
 
 ## Rodando o projeto com docker
 
