@@ -22,7 +22,7 @@ docker run -d -p 8435:8435 techjobmatcher
 ```
 # Como funciona
 
-Após receber uma query via endpoint no seguinte formato: http://localhost:8435/query?query={palavras que quer pesquisa}, a API Tech Job Matcher vai procurar qual a vaga mais relevante no banco de dados com base na relevância TF-IDF (Term Frequency-Inverse Document Frequency), um método que avalia a importância de uma palavra em um documento em relação a um conjunto de documentos. A TF-IDF dá mais peso a palavras que são frequentes em um documento, mas raras em outros documentos, ajudando a identificar palavras chave para cada vaga. A acurácia é melhorada devido ao uso de uma lista de stop words (palavras que não agregam significado) que são ignoradas no cálculo. Também é usado um sistema de Similaridade do Cosseno, que calcula a similaridade entre o vetor da consulta e os vetores das vagas de emprego. A similaridade é baseada no ângulo entre os vetores, permitindo comparar quão similares são as descrições de vagas com a consulta.
+Após receber uma query via endpoint no seguinte formato: http://localhost:8435/query?query={palavras que quer pesquisar}, a API Tech Job Matcher vai procurar qual a vaga mais relevante no banco de dados com base na relevância TF-IDF (Term Frequency-Inverse Document Frequency), um método que avalia a importância de uma palavra em um documento em relação a um conjunto de documentos. A TF-IDF dá mais peso a palavras que são frequentes em um documento, mas raras em outros documentos, ajudando a identificar palavras chave para cada vaga. A acurácia é melhorada devido ao uso de uma lista de stop words (palavras que não agregam significado) que são ignoradas no cálculo. Também é usado um sistema de Similaridade do Cosseno, que calcula a similaridade entre o vetor da consulta e os vetores das vagas de emprego. A similaridade é baseada no ângulo entre os vetores, permitindo comparar quão similares são as descrições de vagas com a consulta.
 
 # De onde vieram os dados
 
@@ -30,7 +30,7 @@ Eu fiz um Web Scrapper de página dinâmica (com Java Script ativo e dados mudan
 
 # Como testar
 
-É possível digitar http://10.103.0.28:8435/query?query={palavras que quer pesquisar} na web e escolher a lista de palavras que for mais interessante para você, mas aqui estão alguns exemplos e possíveis resultados:
+É possível digitar http://10.103.0.28:8435/query?query={palavras que quer pesquisar} na web e escolher a lista de palavras que for mais interessante para você, mas aqui estão alguns exemplos e possíveis resultados (É necessário estar conectado na internet do Insper para testar):
 
 Um teste que retorna pelo menos 10 resultados:
     [/query?query=html](http://10.103.0.28:8435/query?query=html)
