@@ -30,15 +30,17 @@ Eu fiz um Web Scrapper de página dinâmica (com Java Script ativo e dados mudan
 
 # Como testar
 
-É possível digitar http://10.103.0.28:8435/query?query={palavras que quer pesquisar} na web e escolher a lista de palavras que for mais interessante para você, mas aqui estão alguns exemplos e possíveis resultados (É necessário estar conectado na internet do Insper para testar):
+É possível digitar `http://10.103.0.28:8435/query?query={palavras que quer pesquisar}` na web e escolher a lista de palavras que for mais interessante para você, mas aqui estão alguns exemplos e possíveis resultados (É necessário estar conectado na internet do Insper para testar):
 
-Um teste que retorna pelo menos 10 resultados:
-    [/query?query=html](http://10.103.0.28:8435/query?query=html)
-Um teste que retorna entre 1 e 10 resultados:
-    [/query?query=python java django](http://10.103.0.28:8435/query?query=python java django)
-Um teste que retorna um resultado não óbvio:
-    [/query?query=Desenvolvedor de software com experiência em fintechs](http://10.103.0.28:8435/query?query=Desenvolvedor de software com experiência em fintechs)
-    Obs: Considerei como não óbvio pois os resultados de fato abordam a "experiência em fintech" ao invés de pegar vagas genéricas de "Desenvolvedor" e "Software".
+- **Um teste que retorna pelo menos 10 resultados**:  
+  [`/query?query=html`](http://10.103.0.28:8435/query?query=html)
+
+- **Um teste que retorna entre 1 e 10 resultados**:  
+  [`/query?query=python java django`](http://10.103.0.28:8435/query?query=python%20java%20django)
+
+- **Um teste que retorna um resultado não óbvio**:  
+  [`/query?query=Desenvolvedor de software com experiência em fintechs`](http://10.103.0.28:8435/query?query=Desenvolvedor%20de%20software%20com%20experiência%20em%20fintechs)  
+  _Obs: Considerei como não óbvio pois os resultados de fato abordam a "experiência em fintech" ao invés de pegar vagas genéricas de "Desenvolvedor" e "Software"._
 
 # Relevância do tema
 
