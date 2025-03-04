@@ -20,7 +20,7 @@ def test_query_yields_few_results():
     assert json_response["message"] == "OK"
 
 def test_query_yields_non_obvious_results():
-    response = client.get("/query?query=Desenvolvedor de software com experiência em fintechs")
+    response = client.get("Desenvolvedor de software com experiência em fintechs")
     json_response = response.json()
     
     # TODO: add assert to verify non obvious results
